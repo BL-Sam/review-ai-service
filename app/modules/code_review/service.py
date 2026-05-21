@@ -9,12 +9,13 @@ from app.modules.code_review.agent.builder import (
 )
 from app.modules.code_review.prompts.prompt import SYSTEM_PROMPT
 from app.modules.code_review.prompts.user_prompt_builder import UserPromptBuilder
-from app.core.exceptions import (
+from app.core.exceptions.custom_exceptions import (
     GeminiAPIException,
     InvalidResponseException,
     PromptGenerationException,
     GeminiAPIResourceExhausted
 )
+from pydantic_ai.exceptions import ModelHTTPError
 from tenacity import (
     retry,
     stop_after_attempt,
@@ -64,7 +65,9 @@ class CodeReviewService:
             parsed_response = self._parse_response(response.output)
 
             return parsed_response
-
+        except ModelHTTPError as exc:
+            logger.exception("Gemini model unavailable")
+            raise GeminiAPIException("AI Service Timeout. Please retry request.") from exc
         except google_exceptions.ResourceExhausted:
             logger.exception("Api Key exhausted")
             raise GeminiAPIResourceExhausted("Api Key exhausted")
@@ -130,7 +133,8 @@ class CodeReviewService:
             (
                 google_exceptions.ResourceExhausted,
                 google_exceptions.ServiceUnavailable,
-                google_exceptions.DeadlineExceeded
+                google_exceptions.DeadlineExceeded,
+                ModelHTTPError
             )
         ),
         wait=wait_exponential(
