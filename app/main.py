@@ -20,3 +20,7 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan
 )
+
+from app.modules.code_review.router import code_review_router
+
+app.include_router(code_review_router)
