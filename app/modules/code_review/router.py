@@ -1,5 +1,5 @@
 from app.core.logger import app_logger as logger
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, Depends
 from fastapi.responses import JSONResponse
 from app.modules.code_review.schemas import (
     CodeCheckEvaluation
@@ -11,6 +11,7 @@ from app.modules.code_review.schemas import (
     CodeEvaluationSuccessResponse,
     CodeEvaluationFailureResponse
 )
+from app.core.security import auth_handler
 # from app.modules.code_review.prompts.prompt import CODE_ANALYSER_PROMPT as code_eval_prompt
 
 code_review_router = APIRouter(
@@ -40,7 +41,7 @@ service = CodeReviewService()
         }
     },
 )
-async def generate_evaluation_for_code(payload:CodeCheckEvaluation):
+async def generate_evaluation_for_code(payload:CodeCheckEvaluation, _: str = Depends(auth_handler.verify_api_token)):
    
     logger.info("Running code review with code analyser agent...")
     review_results = await service.code_evaluation_with_gemini(payload.content, payload.language)

@@ -11,7 +11,15 @@ class BaseAPIException(Exception):
 
         super().__init__(message)
 
+class InvalidTokenException(BaseAPIException):
+    
+    def __init__(
+        self,
+        message: str = "Invalid Token",
+        status_code: int = 401
+    ):
 
+        super().__init__(message, status_code)
 
 class CodeReviewException(BaseAPIException):
 
