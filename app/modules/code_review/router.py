@@ -9,7 +9,8 @@ from app.modules.code_review.service import CodeReviewService
 from app.core.exceptions.custom_exceptions import BaseAPIException
 from app.modules.code_review.schemas import (
     CodeEvaluationSuccessResponse,
-    CodeEvaluationFailureResponse
+    CodeEvaluationFailureResponse,
+    StatusResponse
 )
 from app.core.security import auth_handler
 # from app.modules.code_review.prompts.prompt import CODE_ANALYSER_PROMPT as code_eval_prompt
@@ -46,11 +47,19 @@ async def generate_evaluation_for_code(payload:CodeCheckEvaluation, _: str = Dep
     logger.info("Running code review with code analyser agent...")
     review_results = await service.code_evaluation_with_gemini(payload.content, payload.language)
     logger.info(f"Code Analysing finished with Review results: {review_results}")
-    return {
-        "status": {
-            "success": True,
-            "error_message": None
-        },
-        "message": "Answer stored and review generated successfully",
-        "data": review_results,
-    }
+    return CodeEvaluationSuccessResponse(
+        status = StatusResponse(
+            success=True,
+            error_message=None
+        ),
+        message =  "Code Review Completed",
+        data = review_results
+    )
+    # return {
+    #     "status": {
+    #         "success": True,
+    #         "error_message": None
+    #     },
+    #     "message": "Answer stored and review generated successfully",
+    #     "data": review_results,
+    # }

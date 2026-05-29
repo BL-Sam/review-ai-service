@@ -1,12 +1,8 @@
 import json
 from google.api_core import exceptions as google_exceptions
 from app.core.logger import app_logger as logger
-from app.modules.utils.agent_ouput import (
-    extract_json_from_model_output
-)
-from app.modules.code_review.agent.builder import (
-    CodeReviewAgentBuilder
-)
+from app.modules.utils.agent_ouput import extract_json_from_model_output
+from app.modules.code_review.agent.builder import CodeReviewAgentBuilder
 from app.modules.code_review.prompts.prompt import SYSTEM_PROMPT
 from app.modules.code_review.prompts.user_prompt_builder import UserPromptBuilder
 from app.core.exceptions.custom_exceptions import (

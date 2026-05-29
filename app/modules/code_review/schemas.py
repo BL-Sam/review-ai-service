@@ -16,7 +16,8 @@ class CodeCheckEvaluation(BaseModel):
 class StatusResponse(BaseModel):
 
     success: bool
-    error_message: Optional[str] = None
+    message: Optional[str] = None
+
 
 # Score Response
 class ReviewScores(BaseModel):

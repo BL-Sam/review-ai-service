@@ -11,6 +11,13 @@ class BaseAPIException(Exception):
 
         super().__init__(message)
 
+class AudioDownloadException(Exception):
+    def __init__(
+        self,
+        message: str = "Failed to access audio file"
+    ):
+        super().__init__(message = message, status_code = 400)
+
 class InvalidTokenException(BaseAPIException):
     
     def __init__(

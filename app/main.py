@@ -42,5 +42,8 @@ app.add_exception_handler(
 )
 
 from app.modules.code_review.router import code_review_router
+from app.modules.audio_review.router import audio_review_router
+
 
 app.include_router(code_review_router)
+app.include_router(audio_review_router)

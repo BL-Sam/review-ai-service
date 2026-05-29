@@ -42,18 +42,52 @@ async def global_exception_handler(
     )
 
 
-async def validation_exception_handler(
-    request: Request,
-    exc: RequestValidationError
-):
+# async def validation_exception_handler(
+#     request: Request,
+#     exc: RequestValidationError
+# ):
 
-    first_error = exc.errors()[0]
+#     first_error = exc.errors()[0]
 
-    field_name = first_error["loc"][-1]
+#     field_name = first_error["loc"][-1]
 
-    message = (
-        f"Field '{field_name}' "
-        f"is required"
+#     message = (
+#         f"Field '{field_name}' "
+#         f"is required"
+#     )
+
+#     return JSONResponse(
+#         status_code=422,
+#         content={
+#             "status": {
+#                 "success": False,
+#                 "error_message": message
+#             },
+#             "evaluations": []
+#         }
+#     )
+
+
+
+async def validation_exception_handler(request, exc: RequestValidationError):
+    errors = exc.errors()
+
+    first_error = errors[0]
+
+    loc = first_error.get("loc", [])
+    msg = first_error.get("msg", "Invalid request payload")
+
+    field_name = None
+
+    for item in reversed(loc):
+        if isinstance(item, str) and item != "body":
+            field_name = item
+            break
+
+    error_message = (
+        f"Field '{field_name}' is required"
+        if field_name
+        else msg
     )
 
     return JSONResponse(
@@ -61,8 +95,8 @@ async def validation_exception_handler(
         content={
             "status": {
                 "success": False,
-                "error_message": message
+                "error_message": error_message,
             },
-            "evaluations": []
-        }
+            "evaluations": [],
+        },
     )
