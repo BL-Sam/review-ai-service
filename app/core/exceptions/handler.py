@@ -33,9 +33,7 @@ async def global_exception_handler(
         content={
             "status": {
                 "success": False,
-                "error_message": (
-                    "Unexpected internal server error"
-                )
+                "error_message": ("Unexpected internal server error")
             },
             "evaluations": []
         }

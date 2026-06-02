@@ -11,7 +11,14 @@ class BaseAPIException(Exception):
 
         super().__init__(message)
 
-class AudioDownloadException(Exception):
+class FileNotInBucket(BaseAPIException):
+    def __init__(
+        self,
+        message: str = "File not found in bucket"
+    ):
+        super().__init__(message = message, status_code = 404)
+
+class AudioDownloadException(BaseAPIException):
     def __init__(
         self,
         message: str = "Failed to access audio file"

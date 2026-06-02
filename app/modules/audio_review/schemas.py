@@ -27,3 +27,20 @@ class AudioEvaluationResult(BaseModel):
 class AudioReviewResponse(BaseModel):
     status: EvaluationStatus
     evaluations: List[AudioEvaluationResult]
+
+class AudioEvaluationFailureResponse(BaseModel):
+    
+    status: EvaluationStatus
+
+    evaluations: List = []
+
+# class AudioUploadUrlRequest(BaseModel):
+#     user_id: str
+#     question_id: str
+#     file_extension: str
+
+# class AudioUploadCompleteRequest(BaseModel):
+#     user_id: str
+#     question_id: str
+#     question_text: str
+#     audio_file_url: str

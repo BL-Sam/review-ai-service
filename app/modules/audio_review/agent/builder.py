@@ -10,9 +10,7 @@ from app.integrations.llms.gemini_client import (
 class AudioReviewAgentBuilder:
 
     @staticmethod
-    def build(
-        system_prompt: str
-    ) -> Agent:
+    def build(system_prompt: str) -> Agent:
 
         return Agent(
             model=GeminiClient.get_model(),

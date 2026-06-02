@@ -55,11 +55,3 @@ async def generate_evaluation_for_code(payload:CodeCheckEvaluation, _: str = Dep
         message =  "Code Review Completed",
         data = review_results
     )
-    # return {
-    #     "status": {
-    #         "success": True,
-    #         "error_message": None
-    #     },
-    #     "message": "Answer stored and review generated successfully",
-    #     "data": review_results,
-    # }
